@@ -2,13 +2,43 @@ package leetcode.寻找两个有序数组的中位数;
 
 public class Solution {
 
+    public static void main(String[] args){
+        int[] nums1 = {1,3};
+        int[] nums2 = {2};
+        Solution s = new Solution();
+        System.out.println(s.findMedianSortedArrays(nums1,nums2));
+    }
+
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
-        int[] merged = merge(nums1, nums2);
-        int len = merged.length;
+
+        int len = nums1.length+nums2.length;
+        int n = 0;
+        int m = 0;
+        int mid_index = len / 2;
+        int i = 0;//nums1 游标
+        int j = 0;//nums2 游标
+        for (int k = 0; k <= mid_index; k++) {
+            if (i < nums1.length && j < nums2.length) {
+                n = m;
+                if (nums1[i] < nums2[j]) {
+                    m = nums1[i++];
+                } else {
+                    m = nums2[j++];
+                }
+            }
+            else if (i < nums1.length) {
+                n = m;
+                m = nums1[i++];
+            }
+            else if(j < nums2.length) {
+                n = m;
+                m = nums2[j++];
+            }
+        }
         if ((len & 0x01) == 1) {
-            return (double) merged[len / 2];
+            return m;
         } else {
-            return (double)(merged[len >> 1] + merged[(len >> 1) - 1])/2;
+            return (double) (m+n) / 2;
         }
 
     }
